@@ -95,6 +95,7 @@ public class VoiceSpawner : Widget {
             string currentMat = null;
             string currentScale = null;
             string currentAction = null;
+            string currentObject = null;
             if (intent == "create")
             {
                 bool createdObject = false;
@@ -108,23 +109,30 @@ public class VoiceSpawner : Widget {
                     if (entity.entity == "action")
                     {
                         currentAction = entity.value;
+
                     }
                     if (entity.entity == "scale")
                     {
                         currentScale = entity.value;
                     }
-                    else if (entity.entity == "object")
+
+                    if (entity.entity == "object")
                     {
-                        gameManager.CreateObject(entity.value, currentMat, currentScale, currentAction);
                         createdObject = true;
-                        currentMat = null;
-                        currentScale = null;
+                        currentObject = entity.value;
                     } 
                 }
 
-                if (!createdObject)
+            if (!createdObject)
                 {
-                 //   gameManager.PlayError(sorryClip);
+                    //   gameManager.PlayError(sorryClip);
+                }
+                else
+                {
+                    gameManager.CreateObject(currentObject, currentMat, currentScale, currentAction);
+                    createdObject = true;
+                    currentMat = null;
+                    currentScale = null;
                 }
             } else if (intent == "destroy")
             {
